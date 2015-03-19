@@ -25,9 +25,7 @@
 (defn number28
   "Write a function which flattens a sequence."
   [xs]
-  (if (empty? xs)
-    xs
     (let [x (first xs) ys (rest xs)]
       (concat
         (if (coll? x) (number28 x) [x])
-        (number28 ys)))))
+        (when (not-empty ys) (number28 ys)))))
