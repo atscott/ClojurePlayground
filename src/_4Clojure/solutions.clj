@@ -21,3 +21,15 @@
     (if (= (first x) (last x))
       (recur (drop-last (rest x)))
       false)))
+
+(defn number28
+  "Write a function which flattens a sequence."
+  [x]
+  (if (empty? x)
+    x
+    (if (coll? (first x))
+      (concat (number28 (first x)) (number28 (rest x)))
+      (cons (first x) (number28 (rest x)))
+      )))
+
+
