@@ -29,3 +29,16 @@
 (defn number29 [s]
   "Write a function which takes a string and returns a new string containing only the capital letters."
   (apply str (re-seq #"[A-Z]" s)))
+
+
+(defn number30 [xs]
+  "Write a function which removes consecutive duplicates from a sequence."
+   (map first (partition-by identity xs)))
+
+(fn number32 [xs]
+  "Write a function which duplicates each element of a sequence."
+  (mapcat identity  (map #(list % %) xs)))
+
+(defn number32v2 [xs]
+  mapcat list xs xs)
+
