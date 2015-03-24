@@ -60,9 +60,10 @@
 
 (defn number40 [delim xs]
   "Write a function which separates the items of a sequence by an arbitrary value. (can't use interpose)"
-  (->> (repeat (count xs) delim)
+  (->> (repeat delim)
        (interleave xs)
        (butlast)))
 
 (defn number41 [xs n]
+  "Write a function which drops every Nth item from a sequence."
   (mapcat #(take (dec n) %) (partition-all n xs)))
