@@ -63,3 +63,6 @@
   (->> (repeat (count xs) delim)
        (interleave xs)
        (butlast)))
+
+(defn number41 [xs n]
+  (mapcat #(take (dec n) %) (partition-all n xs)))
