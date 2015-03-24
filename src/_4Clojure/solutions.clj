@@ -33,12 +33,33 @@
 
 (defn number30 [xs]
   "Write a function which removes consecutive duplicates from a sequence."
-   (map first (partition-by identity xs)))
+  (map first (partition-by identity xs)))
 
 (fn number32 [xs]
   "Write a function which duplicates each element of a sequence."
-  (mapcat identity  (map #(list % %) xs)))
+  (mapcat identity (map #(list % %) xs)))
 
 (defn number32v2 [xs]
   mapcat list xs xs)
 
+(defn number33 [xs n]
+  "Write a function which replicates each element of a sequence a variable number of times."
+  (apply mapcat list (repeat n xs)))
+
+(defn number34 [l u]
+  "Write a function which creates a list of all integers in a given range."
+  (take (- u l) (iterate inc l)))
+
+(defn number38 [& colls]
+  "Write a function which takes a variable number of parameters and returns the maximum value."
+  (last (sort colls)))
+
+(defn number39 [& colls]
+  "Write a function which takes two sequences and returns the first item from each, then the second item from each, then the third, etc."
+  (apply mapcat list colls))
+
+(defn number40 [delim xs]
+  "Write a function which separates the items of a sequence by an arbitrary value. (can't use interpose)"
+  (->> (repeat (count xs) delim)
+       (interleave xs)
+       (butlast)))
