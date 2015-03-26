@@ -67,3 +67,11 @@
 (defn number41 [xs n]
   "Write a function which drops every Nth item from a sequence."
   (mapcat #(take (dec n) %) (partition-all n xs)))
+
+(defn number42 [n]
+  "Write a function which calculates factorials."
+  (reduce * 1 (range 1 (inc n))))
+
+(defn number43 [xs n]
+  "Write a function which reverses the interleave process into x number of subsequences."
+  (apply map list (partition-all n xs)))
