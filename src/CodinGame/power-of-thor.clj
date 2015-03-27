@@ -18,13 +18,12 @@
 (defn compute-moves-awesome [dx dy]
   (let [absX (Math/abs dx)
         absY (Math/abs dy)
-        nilNormalize (repeat (Math/abs (- absX absY)) nil)
         xDir (concat
                (repeat absX (if (neg? dx) \W \E))
-               (when (< absX absY) nilNormalize))
+               (when (< absX absY) (cycle [nil])))
         yDir (concat
                (repeat absY (if (neg? dy) \N \S))
-               (when (< absY absX) nilNormalize))
+               (when (< absY absX) (cycle [nil])))
         moves (map list yDir xDir)]
     (doseq [move moves] (println (apply str move)))))
 
