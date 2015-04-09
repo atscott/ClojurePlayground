@@ -83,9 +83,9 @@
 (defn number44 [n xs]
   "Write a function which can rotate a sequence in either direction."
   (cond
-          (< n 0) (recur (inc n) (cons (last xs) (butlast xs)))
-          (> n 0) (recur (dec n) (concat (rest xs) [(first xs)]))
-          :else xs ))
+    (< n 0) (recur (inc n) (cons (last xs) (butlast xs)))
+    (> n 0) (recur (dec n) (concat (rest xs) [(first xs)]))
+    :else xs))
 
 (defn number46 [f]
   "Write a higher-order function which flips the order of the arguments of an input function."
@@ -94,6 +94,21 @@
 (defn number50 [xs]
   "Write a function which takes a sequence consisting of items with different types and splits them up into a set of homogeneous sub-sequences. The internal order of each sub-sequence should be maintained, but the sub-sequences themselves can be returned in any order (this is why 'set' is used in the test cases)."
   (vals (group-by type xs)))
+
+(defn number61 [a b]
+  "Write a function which takes a vector of keys and a vector of values and constructs a map from them."
+  (apply hash-map (interleave a b)))
+
+(defn number66 [h l]
+  "GCD"
+  (let [high (max h l) low (min h l)]
+    (if (zero? low)
+      high
+      (recur low (mod high low)))))
+
+(defn number83 [& x]
+  "Write a function which takes a variable number of booleans. Your function should return true if some of the parameters are true, but not all of the parameters are true. Otherwise your function should return false."
+  (-> (group-by identity x) count (= 2)))
 
 (defn number156 [default xs]
   "Write a function which takes a default value and a sequence of keys and constructs a map."
