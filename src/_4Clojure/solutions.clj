@@ -1,5 +1,9 @@
 ; http://www.4clojure.com/problem/[number]
 
+(defn number23 [xs]
+  "Write a function which reverses a sequence."
+  (reduce conj () xs))
+
 (defn number24 [x] (reduce + x))
 
 (defn number25 [x] (filter odd? x))
@@ -75,3 +79,22 @@
 (defn number43 [xs n]
   "Write a function which reverses the interleave process into x number of subsequences."
   (apply map list (partition-all n xs)))
+
+(defn number44 [n xs]
+  "Write a function which can rotate a sequence in either direction."
+  (cond
+          (< n 0) (recur (inc n) (cons (last xs) (butlast xs)))
+          (> n 0) (recur (dec n) (concat (rest xs) [(first xs)]))
+          :else xs ))
+
+(defn number46 [f]
+  "Write a higher-order function which flips the order of the arguments of an input function."
+  (fn [a b] (f b a)))
+
+(defn number50 [xs]
+  "Write a function which takes a sequence consisting of items with different types and splits them up into a set of homogeneous sub-sequences. The internal order of each sub-sequence should be maintained, but the sub-sequences themselves can be returned in any order (this is why 'set' is used in the test cases)."
+  (vals (group-by type xs)))
+
+(defn number156 [default xs]
+  "Write a function which takes a default value and a sequence of keys and constructs a map."
+  (zipmap xs (repeat default)))
