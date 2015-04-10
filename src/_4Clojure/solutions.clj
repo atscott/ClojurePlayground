@@ -99,12 +99,20 @@
   "Write a function which takes a vector of keys and a vector of values and constructs a map from them."
   (apply hash-map (interleave a b)))
 
+(defn number62 [f i]
+  "Given a side-effect free function f and an initial value x write a function which returns an infinite lazy sequence of x, (f x), (f (f x)), (f (f (f x))), etc. (can't use iterate)"
+  (cons i (lazy-seq (lazy f (f i)))))
+
 (defn number66 [h l]
   "GCD"
   (let [high (max h l) low (min h l)]
     (if (zero? low)
       high
       (recur low (mod high low)))))
+
+(defn number81 [a b]
+  "Write a function which returns the intersection of two sets. The intersection is the sub-set of items that each set has in common."
+  (set (filter a b)))
 
 (defn number83 [& x]
   "Write a function which takes a variable number of booleans. Your function should return true if some of the parameters are true, but not all of the parameters are true. Otherwise your function should return false."
@@ -119,6 +127,3 @@
         (f b a) :gt
         :else :eq))
 
-(defn number81 [a b]
-  "Write a function which returns the intersection of two sets. The intersection is the sub-set of items that each set has in common."
-  (set (filter a b)))
