@@ -101,7 +101,7 @@
 
 (defn number62 [f i]
   "Given a side-effect free function f and an initial value x write a function which returns an infinite lazy sequence of x, (f x), (f (f x)), (f (f (f x))), etc. (can't use iterate)"
-  (cons i (lazy-seq (lazy f (f i)))))
+  (cons i (lazy-seq (number62 f (f i)))))
 
 (defn number66 [h l]
   "GCD"
