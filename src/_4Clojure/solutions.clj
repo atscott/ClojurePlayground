@@ -113,3 +113,12 @@
 (defn number156 [default xs]
   "Write a function which takes a default value and a sequence of keys and constructs a map."
   (zipmap xs (repeat default)))
+
+(defn number166 [f a b]
+  (cond (f a b) :lt
+        (f b a) :gt
+        :else :eq))
+
+(defn number81 [a b]
+  "Write a function which returns the intersection of two sets. The intersection is the sub-set of items that each set has in common."
+  (set (filter a b)))
