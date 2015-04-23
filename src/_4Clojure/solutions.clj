@@ -103,6 +103,10 @@
   "Given a side-effect free function f and an initial value x write a function which returns an infinite lazy sequence of x, (f x), (f (f x)), (f (f (f x))), etc. (can't use iterate)"
   (cons i (lazy-seq (number62 f (f i)))))
 
+(defn number63 [f s]
+  "Given a function f and a sequence s, write a function which returns a map. The keys should be the values of f applied to each item in s. The value at each key should be a vector of corresponding items in the order they appear in s. (can't use group-by)"
+  (reduce #(assoc %1 (f %2) (concat (%1 (f %2)) [%2])) {} s))
+
 (defn number66 [h l]
   "GCD"
   (let [high (max h l) low (min h l)]
@@ -117,6 +121,24 @@
 (defn number83 [& x]
   "Write a function which takes a variable number of booleans. Your function should return true if some of the parameters are true, but not all of the parameters are true. Otherwise your function should return false."
   (-> (group-by identity x) count (= 2)))
+
+(defn number90 [xs ys]
+  "Write a function which calculates the Cartesian product of two sets."
+  (set
+    (for [x xs
+          y ys]
+      [x y])))
+
+(defn number99 [x y]
+  "Write a function which multiplies two numbers and returns the result as a sequence of its digits."
+  (->> (* x y)
+       str
+       (re-seq #"\d")
+       (map #(Integer. %))))
+
+(defn number107 [n]
+  "Given a positive integer n, return a function (f x) which computes x^n."
+  #(reduce * (repeat n %)))
 
 (defn number156 [default xs]
   "Write a function which takes a default value and a sequence of keys and constructs a map."
