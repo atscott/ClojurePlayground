@@ -140,6 +140,19 @@
   "Given a positive integer n, return a function (f x) which computes x^n."
   #(reduce * (repeat n %)))
 
+(defn number122 [binary]
+  "Convert a binary number, provided in the form of a string, to its numerical value."
+  (let [t (->> (reverse binary)
+               (map-indexed #(vector % (* 2 (read-string (str %2)))))
+               (reduce #(+ %1 (Math/pow (last %2) (first %2))) 0)
+               (int))]
+    (if (= \1 (last binary)) t (dec t))))
+
+(defn number143 [a b]
+  "Create a function that computes the dot product of two sequences. You may assume that the vectors will have the same length."
+  (->> (map * a b)
+       (reduce +)))
+
 (defn number156 [default xs]
   "Write a function which takes a default value and a sequence of keys and constructs a map."
   (zipmap xs (repeat default)))
@@ -148,4 +161,5 @@
   (cond (f a b) :lt
         (f b a) :gt
         :else :eq))
+
 
