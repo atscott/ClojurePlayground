@@ -122,12 +122,28 @@
   "Write a function which takes a variable number of booleans. Your function should return true if some of the parameters are true, but not all of the parameters are true. Otherwise your function should return false."
   (-> (group-by identity x) count (= 2)))
 
+(defn number88 [xs ys]
+  "Write a function which returns the symmetric difference of two sets. The symmetric difference is the set of items belonging to one but not both of the two sets."
+  (clojure.set/union (clojure.set/difference xs ys) (clojure.set/difference ys xs)))
+
 (defn number90 [xs ys]
   "Write a function which calculates the Cartesian product of two sets."
   (set
     (for [x xs
           y ys]
       [x y])))
+
+(defn number97 [n]
+  "Write a function which returns the nth row of Pascal's Triangle."
+  (loop [rowNum 2 previous [1]]
+    (if (> rowNum n)
+      previous
+      (recur
+        (inc rowNum)
+        (reduce
+          #(conj % (+ (nth previous (dec %2) 0) (nth previous %2 0)))
+          []
+          (range rowNum))))))
 
 (defn number99 [x y]
   "Write a function which multiplies two numbers and returns the result as a sequence of its digits."
@@ -147,6 +163,11 @@
                (reduce #(+ %1 (Math/pow (last %2) (first %2))) 0)
                (int))]
     (if (= \1 (last binary)) t (dec t))))
+
+(defn number135 [i & rest]
+  "Write a function that accepts a variable length mathematical expression consisting of numbers and the operations +, -, *, and /. Assume a simple calculator that does not do precedence and instead just calculates left to right."
+  (reduce #((first %2) %1 (last %2))
+          i (partition 2 rest)))
 
 (defn number143 [a b]
   "Create a function that computes the dot product of two sequences. You may assume that the vectors will have the same length."
