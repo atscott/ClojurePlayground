@@ -156,6 +156,12 @@
   "Given a positive integer n, return a function (f x) which computes x^n."
   #(reduce * (repeat n %)))
 
+(defn number118 [f xs]
+  "Map is one of the core elements of a functional programming language. Given a function f and an input sequence s, return a lazy sequence of (f x) for each element x in s."
+  (if (empty? xs)
+    []
+    (lazy-cat [(f (first xs))] (number118 f (rest xs)))))
+
 (defn number122 [binary]
   "Convert a binary number, provided in the form of a string, to its numerical value."
   (let [t (->> (reverse binary)
