@@ -133,6 +133,17 @@
           y ys]
       [x y])))
 
+(defn number95 [t]
+  "Write a predicate which checks whether or not a given sequence represents a binary tree. Each node in the tree must have a value, a left child, and a right child."
+  (cond
+    (= nil t) true
+    (not (coll? t)) false
+    :else (cond (and
+                  (= 3 (count t))
+                  (number95 (second t))
+                  (number95 (last t))) true
+                :else false)))
+
 (defn number97 [n]
   "Write a function which returns the nth row of Pascal's Triangle."
   (loop [rowNum 2 previous [1]]
@@ -162,6 +173,14 @@
     []
     (lazy-cat [(f (first xs))] (number118 f (rest xs)))))
 
+
+(defn number120 [xs]
+  "Write a function which takes a collection of integers as an argument. Return the count of how many elements are smaller than the sum of their squared component digits. For example: 10 is larger than 1 squared plus 0 squared; whereas 15 is smaller than 1 squared plus 5 squared."
+  (letfn [(sum-square-components [n]
+                                 (reduce #(+ % (Math/pow (Integer/parseInt (str %2)) 2))
+                                         0 (str n)))]
+    (count (filter #(< % (sum-square-components %)) xs))))
+
 (defn number122 [binary]
   "Convert a binary number, provided in the form of a string, to its numerical value."
   (let [t (->> (reverse binary)
@@ -188,5 +207,6 @@
   (cond (f a b) :lt
         (f b a) :gt
         :else :eq))
+
 
 
