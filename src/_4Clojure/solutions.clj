@@ -163,6 +163,17 @@
        (re-seq #"\d")
        (map #(Integer. %))))
 
+(defn number100
+  "Write a function which calculates the least common multiple. Your function should accept a variable number of positive integers or ratios. "
+  ([a b]
+   (letfn [(gcd [x y]
+                (if (<= y 0)
+                  x
+                  (recur y (mod x y))))]
+     (* a (quot b (gcd a b)))))
+  ([a b & c]
+   (reduce #(number100 % %2) a (cons b c))))
+
 (defn number107 [n]
   "Given a positive integer n, return a function (f x) which computes x^n."
   #(reduce * (repeat n %)))
@@ -207,6 +218,4 @@
   (cond (f a b) :lt
         (f b a) :gt
         :else :eq))
-
-
 
