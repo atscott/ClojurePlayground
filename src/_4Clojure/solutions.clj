@@ -144,6 +144,14 @@
                   (number95 (last t))) true
                 :else false)))
 
+(defn number96 [[_ left right]]
+  "Let us define a binary tree as 'symmetric' if the left half of the tree is the mirror image of the right half of the tree. Write a predicate to determine whether or not a given binary tree is symmetric. "
+  (letfn [(mirror-leaves [[h l r :as t]]
+                         (if (coll? t)
+                           [h (mirror-leaves r) (mirror-leaves l)]
+                           t))]
+    (= left (mirror-leaves right))))
+
 (defn number97 [n]
   "Write a function which returns the nth row of Pascal's Triangle."
   (loop [rowNum 2 previous [1]]
@@ -227,4 +235,6 @@
   (cond (f a b) :lt
         (f b a) :gt
         :else :eq))
+
+
 
