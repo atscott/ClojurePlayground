@@ -210,6 +210,15 @@
   (->> (map * a b)
        (reduce +)))
 
+(defn number147 [r]
+  "Write a function that, for any given input vector of numbers, returns an infinite lazy sequence of vectors, where each next one is constructed from the previous following the rules used in Pascal's Triangle. For example, for [3 1 2], the next row is [3 4 3 2]."
+  (lazy-cat
+    [r]
+    (number147 (reduce
+                 #(conj % (+' (nth r (dec %2) 0) (nth r %2 0)))
+                 []
+                 (range (inc (count r)))))))
+
 (defn number156 [default xs]
   "Write a function which takes a default value and a sequence of keys and constructs a map."
   (zipmap xs (repeat default)))
