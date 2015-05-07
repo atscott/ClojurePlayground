@@ -218,6 +218,12 @@
   (->> (map * a b)
        (reduce +)))
 
+(defn number146 [m]
+  "For this problem, your goal is to 'flatten' a map of hashmaps. Each key in your output map should be the 'path' that you would have to take in the original map to get to a value, so for example {1 {2 3}} should result in {[1 2] 3}. You only need to flatten one level of maps: if one of the values is a map, just leave it alone."
+  (into {} (for [k (keys m)
+                 v (m k)]
+             {[k (key v)] (val v)})))
+
 (defn number147 [r]
   "Write a function that, for any given input vector of numbers, returns an infinite lazy sequence of vectors, where each next one is constructed from the previous following the rules used in Pascal's Triangle. For example, for [3 1 2], the next row is [3 4 3 2]."
   (lazy-cat
@@ -227,6 +233,10 @@
                  []
                  (range (inc (count r)))))))
 
+(defn number153 [s]
+  "Given a set of sets, create a function which returns true if no two of those sets have any elements in common1 and false otherwise. Some of the test cases are a bit tricky, so pay a little more attention to them."
+  (apply distinct? (reduce #(concat % %2) s)))
+
 (defn number156 [default xs]
   "Write a function which takes a default value and a sequence of keys and constructs a map."
   (zipmap xs (repeat default)))
@@ -235,6 +245,4 @@
   (cond (f a b) :lt
         (f b a) :gt
         :else :eq))
-
-
 
