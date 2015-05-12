@@ -11,7 +11,7 @@
     :else false))
 
 (defn -main [& args]
-  (let [[nbFloors width nbRounds exitFloor exitPos nbTotalClones nbAdditionalElevators nbElevators] (doall (repeatedly 8 read))
+  (let [[nbFloors width nbRounds exitFloor exitPos nbTotalClones nbAdditionalElevators nbElevators] (repeatedly 8 read)
         elevators (read-elevators nbElevators)]
     (while true
       (let [cloneFloor (read) clonePos (read) direction (str (read))
