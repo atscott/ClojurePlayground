@@ -8,6 +8,13 @@
       1
       (apply max child-depths))))
 
+(defn depth-tail-rec [root tree]
+  (loop [roots #{root} d 0]
+    (if (empty? roots)
+      d
+      (let [children (reduce #(apply hash-set (concat % (tree %2))) #{} roots)]
+        (recur children (inc d))))))
+
 (defn read-influences [n]
   (let [pairs (doall (repeatedly n #(let [x (read) y (read)] [x y])))]
     (reduce (fn [m [x y]] (assoc m x (concat [y] (m x)))) {} pairs)))
@@ -15,7 +22,6 @@
 (defn -main [& args]
   (let [n (read)
         influences (read-influences n)
-        memo-depth (memoize depth)
+        memo-depth (memoize depth-tail-rec)
         max-depth (reduce #(max % (memo-depth %2 influences)) 0 (keys influences))]
-
     (println max-depth)))
