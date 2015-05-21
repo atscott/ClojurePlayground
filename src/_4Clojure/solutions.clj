@@ -95,6 +95,11 @@
   "Write a function which takes a sequence consisting of items with different types and splits them up into a set of homogeneous sub-sequences. The internal order of each sub-sequence should be maintained, but the sub-sequences themselves can be returned in any order (this is why 'set' is used in the test cases)."
   (vals (group-by type xs)))
 
+(defn number55 [xs]
+    "Write a function which returns a map containing the number of occurences of each distinct item in a sequence."
+  (reduce #(assoc %1 %2 (inc (%1 %2 0))) {} xs)
+)
+
 (defn number61 [a b]
   "Write a function which takes a vector of keys and a vector of values and constructs a map from them."
   (apply hash-map (interleave a b)))
