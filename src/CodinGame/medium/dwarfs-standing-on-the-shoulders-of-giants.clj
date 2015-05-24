@@ -16,7 +16,7 @@
         (recur children (inc d))))))
 
 (defn read-influences [n]
-  (let [pairs (doall (repeatedly n #(let [x (read) y (read)] [x y])))]
+  (let [pairs (doall (repeatedly n #(vector (read) (read))))]
     (reduce (fn [m [x y]] (assoc m x (concat [y] (m x)))) {} pairs)))
 
 (defn -main [& args]
