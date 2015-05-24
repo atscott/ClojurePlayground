@@ -22,6 +22,5 @@
 (defn -main [& args]
   (let [n (read)
         influences (read-influences n)
-        memo-depth (memoize depth-tail-rec)
-        max-depth (reduce #(max % (memo-depth %2 influences)) 0 (keys influences))]
+        max-depth (reduce #(max % (depth-tail-rec %2 influences)) 0 (keys influences))]
     (println max-depth)))
