@@ -25,3 +25,6 @@
 (find-increasing [[1 2 8 4]
                   [5 6 8 8]
                   [9 1 4 3]])
+
+(let [million-matrix (into [] (repeatedly 1000 #(into [] (repeatedly 1000 (fn [] (rand-int 100))))))]
+  (find-increasing million-matrix))
