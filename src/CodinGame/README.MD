@@ -1,0 +1,2 @@
+These problems are from [CodinGame.com](https://www.codingame.com/puzzles)
+My username for the site is [Ascott](https://www.codingame.com/profile/f9e75029abc5086578345b1264bc5a6f989266)
