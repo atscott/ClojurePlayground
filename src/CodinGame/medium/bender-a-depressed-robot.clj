@@ -19,6 +19,8 @@
 (def moves (atom []))
 (def currentPos (atom [0 0]))
 (def currentDir (atom "SOUTH"))
+(def teleporters (atom []))
+(def turn (atom 0))
 
 
 (defn dir-to-target-coords [dir]
@@ -51,13 +53,15 @@
       (= \S board-space) (swap! currentDir (fn [_] "SOUTH"))
       (= \E board-space) (swap! currentDir (fn [_] "EAST"))
       (= \W board-space) (swap! currentDir (fn [_] "WEST"))
-      (= \B board-space) (do (swap! board assoc-in @currentPos " ") (swap! breaker-mode not))
+      (= \B board-space) (swap! breaker-mode not)
       (= \X board-space) (swap! board assoc-in @currentPos " ")
       (= \I board-space) (swap! priorities reverse)
       (= \$ board-space) (swap! done not)
+      (= \T board-space) (swap! currentPos (fn [_] (first (remove #(= @currentPos %) @teleporters))))
       ))
   (binding [*out* *err*]
-    (println @moves))
+    (println "turn:" @turn)
+    (doseq [l (assoc-in @board @currentPos "!")] (println l)))
   (if (not @done)
     (let [final-dir (some #(if ((possible-direction-map) %) %) (cons @currentDir @priorities))]
       (swap! currentPos (fn [_] (dir-to-target-coords final-dir)))
@@ -74,16 +78,15 @@
                (partition-all C)
                (map vec)
                (into []))
-        start (first (get-coords-for b \@))]
-
-    (binding [*out* *err*]
-      (doseq [l b] (println l)))
+        start (first (get-coords-for b \@))
+        ts (get-coords-for b \T)]
 
     (swap! board (fn [_] b))
     (swap! currentPos (fn [_] start))
+    (swap! teleporters concat ts)
 
-    (while (not @done) (swap! moves conj (get-next-move)))
+    (while (and (not @done) (> 1000 @turn)) (do (swap! turn inc) (swap! moves conj (get-next-move))))
 
-    (doseq [m @moves] (if (not (nil? m)) (println m)))))
-
-
+    (if (= 1000 @turn)
+      (println "LOOP")
+      (doseq [m @moves] (if (not (nil? m)) (println m))))))
