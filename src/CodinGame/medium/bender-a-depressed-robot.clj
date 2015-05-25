@@ -1,17 +1,6 @@
 (ns Solution
   (:gen-class))
 
-; Auto-generated code below aims at helping you parse
-; the standard input according to the problem statement.
-
-
-(defn get-coords-for [board item]
-  (for [x (range 0 (count board))
-        y (range 0 (count (first board)))
-        :let [c (get-in board [x y])]
-        :when (= c item)]
-    [x y]))
-
 (def priorities (atom ["SOUTH" "EAST" "NORTH" "WEST"]))
 (def breaker-mode (atom false))
 (def board (atom [[0]]))
@@ -22,6 +11,12 @@
 (def teleporters (atom []))
 (def turn (atom 0))
 
+(defn get-coords-for [board item]
+  (for [x (range 0 (count board))
+        y (range 0 (count (first board)))
+        :let [c (get-in board [x y])]
+        :when (= c item)]
+    [x y]))
 
 (defn dir-to-target-coords [dir]
   (cond
@@ -42,9 +37,7 @@
   {"SOUTH" (can-move-to-space (dir-to-target-coords "SOUTH")),
    "NORTH" (can-move-to-space (dir-to-target-coords "NORTH")),
    "EAST"  (can-move-to-space (dir-to-target-coords "EAST")),
-   "WEST"  (can-move-to-space (dir-to-target-coords "WEST"))}
-  )
-
+   "WEST"  (can-move-to-space (dir-to-target-coords "WEST"))})
 
 (defn get-next-move []
   (let [board-space (get-in @board @currentPos)]
@@ -67,8 +60,7 @@
       (swap! currentPos (fn [_] (dir-to-target-coords final-dir)))
       (swap! currentDir (fn [_] final-dir))
       final-dir
-      ))
-  )
+      )))
 
 (defn -main [& args]
   (let [L (read) C (read) _ (read-line)
