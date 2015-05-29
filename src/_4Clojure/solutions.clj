@@ -96,9 +96,9 @@
   (vals (group-by type xs)))
 
 (defn number55 [xs]
-    "Write a function which returns a map containing the number of occurences of each distinct item in a sequence."
+  "Write a function which returns a map containing the number of occurences of each distinct item in a sequence."
   (reduce #(assoc %1 %2 (inc (%1 %2 0))) {} xs)
-)
+  )
 
 (defn number61 [a b]
   "Write a function which takes a vector of keys and a vector of values and constructs a map from them."
@@ -213,10 +213,10 @@
                (int))]
     (if (= \1 (last binary)) t (dec t))))
 
-(defn number135 [i & rest]
+(defn number135 [i & r]
   "Write a function that accepts a variable length mathematical expression consisting of numbers and the operations +, -, *, and /. Assume a simple calculator that does not do precedence and instead just calculates left to right."
-  (reduce #((first %2) %1 (last %2))
-          i (partition 2 rest)))
+  (reduce (fn [m [f v]] (f m v))
+          i (partition 2 r)))
 
 (defn number143 [a b]
   "Create a function that computes the dot product of two sequences. You may assume that the vectors will have the same length."
