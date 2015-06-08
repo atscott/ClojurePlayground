@@ -105,6 +105,13 @@
                       (assoc % :candidate [%2])))]
     (:max (reduce reduce-fn {:max [], :candidate [(first xs)]} (rest xs)))))
 
+(defn number54 [n col]
+  "Write a function which returns a sequence of lists of x items each. Lists of less than x items should not be returned. (can't use partition or partition-all)"
+  (loop [m [] col col]
+    (if (< (count col) n)
+      m
+      (recur (conj m (take n col)) (drop n col)))))
+
 (defn number55 [xs]
   "Write a function which returns a map containing the number of occurences of each distinct item in a sequence."
   (reduce #(assoc %1 %2 (inc (%1 %2 0))) {} xs))
