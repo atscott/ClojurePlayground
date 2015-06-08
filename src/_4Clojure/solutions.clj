@@ -95,6 +95,16 @@
   "Write a function which takes a sequence consisting of items with different types and splits them up into a set of homogeneous sub-sequences. The internal order of each sub-sequence should be maintained, but the sub-sequences themselves can be returned in any order (this is why 'set' is used in the test cases)."
   (vals (group-by type xs)))
 
+(defn number53 [xs]
+  "Given a vector of integers, find the longest consecutive sub-sequence of increasing numbers. If two sub-sequences have the same length, use the one that occurs first. An increasing sub-sequence must have a length of 2 or greater to qualify."
+  (let [reduce-fn #(let [m (:max %) c (:candidate %)]
+                    (if (< (last c) %2)
+                      (if (< (count m) (inc (count c)))
+                        (assoc % :max (conj c %2) :candidate (conj c %2))
+                        (assoc % :candidate (conj c %2)))
+                      (assoc % :candidate [%2])))]
+    (:max (reduce reduce-fn {:max [], :candidate [(first xs)]} (rest xs)))))
+
 (defn number55 [xs]
   "Write a function which returns a map containing the number of occurences of each distinct item in a sequence."
   (reduce #(assoc %1 %2 (inc (%1 %2 0))) {} xs))
@@ -258,4 +268,3 @@
   (cond (f a b) :lt
         (f b a) :gt
         :else :eq))
-
