@@ -97,8 +97,16 @@
 
 (defn number55 [xs]
   "Write a function which returns a map containing the number of occurences of each distinct item in a sequence."
-  (reduce #(assoc %1 %2 (inc (%1 %2 0))) {} xs)
-  )
+  (reduce #(assoc %1 %2 (inc (%1 %2 0))) {} xs))
+
+(defn number56 [xs]
+  "Write a function which removes the duplicates from a sequence. Order of the items must be maintained."
+  (reduce #(if-not (some #{%2} %1) (conj %1 %2) %1) [] xs))
+
+(defn number58 [& fns]
+  "Write a function which allows you to create function compositions. The parameter list should take a variable number of functions, and create a function applies them from right-to-left. (can't use comp)"
+  (fn [& xs]
+    (first (reduce #(vector (apply %2 %)) xs (reverse fns)))))
 
 (defn number61 [a b]
   "Write a function which takes a vector of keys and a vector of values and constructs a map from them."
