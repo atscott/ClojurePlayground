@@ -176,7 +176,7 @@
            (is (true? (number80 496))))}
   [n]
   (->> (range 1 (inc (/ n 2)))
-       (filter #(= (/ n %) (int (/ n %))))
+       (filter #(zero? (mod n %)))
        (apply +)
        (= n)))
 
