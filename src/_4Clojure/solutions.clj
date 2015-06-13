@@ -1,4 +1,5 @@
 ; http://www.4clojure.com/problem/[number]
+(use '[clojure.test :as t])
 
 (defn number23 [xs]
   "Write a function which reverses a sequence."
@@ -125,6 +126,11 @@
   (fn [& xs]
     (first (reduce #(vector (apply %2 %)) xs (reverse fns)))))
 
+(defn number59 [& fs]
+  "Take a set of functions and return a new function that takes a variable number of arguments and returns a sequence containing the result of applying each function left-to-right to the argument list. (can't use juxt)"
+  (fn [& args]
+    (map #(apply % args) fs)))
+
 (defn number61 [a b]
   "Write a function which takes a vector of keys and a vector of values and constructs a map from them."
   (apply hash-map (interleave a b)))
@@ -143,6 +149,37 @@
     (if (zero? low)
       high
       (recur low (mod high low)))))
+
+(defn number70 [s]
+  "Write a function that splits a sentence up into a sorted list of words. Capitalization should not affect sort order and punctuation should be ignored."
+  (sort-by clojure.string/upper-case (re-seq #"\w+" s)))
+
+(defn number74
+  "Given a string of comma separated integers, write a function that returns a new comma separated string that only contains the numbers that are perfect squares."
+  {:test (fn []
+           (is (= (number74 "4,5,6,7,8,9") "4,9"))
+           (is (= (number74 "15,16,25,36,37") "16,25,36")))}
+  [s]
+  (->> (re-seq #"\d+" s)
+       (map #(Integer/parseInt %))
+       (filter #(= (-> % Math/sqrt int float) (Math/sqrt %)))
+       (interpose ",")
+       (apply str)))
+
+(defn number80
+  "A number is 'perfect' if the sum of its divisors equal the nubmer itself. 6 is a perfect number because 1+2+3=6. Write a function which returns true for perfect numbers and false otherwise."
+  {:test (fn []
+           (is (false? (number80 7)))
+           (is (false? (number80 500)))
+           (is (true? (number80 6)))
+           (is (true? (number80 8128)))
+           (is (true? (number80 496))))}
+  [n]
+  (->> (range 1 (inc (/ n 2)))
+       (filter #(= (/ n %) (int (/ n %))))
+       (apply +)
+       (= n)))
+
 
 (defn number81 [a b]
   "Write a function which returns the intersection of two sets. The intersection is the sub-set of items that each set has in common."
@@ -275,3 +312,5 @@
   (cond (f a b) :lt
         (f b a) :gt
         :else :eq))
+
+(t/run-tests)
