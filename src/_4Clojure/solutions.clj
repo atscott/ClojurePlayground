@@ -162,7 +162,7 @@
   [s]
   (->> (re-seq #"\d+" s)
        (map #(Integer/parseInt %))
-       (filter #(= (-> % Math/sqrt int float) (Math/sqrt %)))
+       (filter #(== (-> % Math/sqrt int) (Math/sqrt %)))
        (interpose ",")
        (apply str)))
 
