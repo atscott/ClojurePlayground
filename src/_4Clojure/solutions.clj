@@ -157,8 +157,8 @@
 (defn number74
   "Given a string of comma separated integers, write a function that returns a new comma separated string that only contains the numbers that are perfect squares."
   {:test (fn []
-           (is (= (number74 "4,5,6,7,8,9") "4,9"))
-           (is (= (number74 "15,16,25,36,37") "16,25,36")))}
+           (is (= "4,9" (number74 "4,5,6,7,8,9")))
+           (is (= "16,25,36" (number74 "15,16,25,36,37"))))}
   [s]
   (->> (re-seq #"\d+" s)
        (map #(Integer/parseInt %))
