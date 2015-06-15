@@ -150,6 +150,22 @@
       high
       (recur low (mod high low)))))
 
+(defn number67
+  "Write a function which returns the first x number of prime numbers."
+  {:test (fn []
+           (is (= [2 3] (number67 2)))
+           (is (= [2 3 5 7 11] (number67 5)))
+           (is (= 541 (last (number67 100)))))}
+  [n]
+  (letfn [(prime? [x]
+                  (->> (range 2 (int (inc (Math/sqrt x))))
+                       (some #(= 0 (mod x %)))
+                       (not)))]
+    (->> (range)
+         (drop 2)
+         (filter prime?)
+         (take n))))
+
 (defn number70 [s]
   "Write a function that splits a sentence up into a sorted list of words. Capitalization should not affect sort order and punctuation should be ignored."
   (sort-by clojure.string/upper-case (re-seq #"\w+" s)))
