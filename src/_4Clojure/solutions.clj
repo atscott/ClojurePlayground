@@ -143,6 +143,22 @@
   "Given a function f and a sequence s, write a function which returns a map. The keys should be the values of f applied to each item in s. The value at each key should be a vector of corresponding items in the order they appear in s. (can't use group-by)"
   (reduce #(assoc %1 (f %2) (concat (%1 (f %2)) [%2])) {} s))
 
+(defn number65
+  "Write a function which takes a collection and returns one of :map, :set, :list, or :vector - describing the type of collection it was given.
+  You won't be allowed to inspect their class or use the built-in predicates like list? - the point is to poke at them and understand their behavior."
+  {:test (fn []
+           (is (= :map (number65 {:a 1, :b 2})))
+           (is (= :list (number65 (range (rand-int 20)))))
+           (is (= :vector (number65 [1 2 3 4])))
+           (is (= :set (number65 #{10 (rand-int 5)}))))}
+  [x]
+  (let [c (first (str x))]
+    (cond
+      (= \{ c) :map
+      (= \# c) :set
+      (= \[ c) :vector
+      :else :list)))
+
 (defn number66 [h l]
   "GCD"
   (let [high (max h l) low (min h l)]
@@ -330,3 +346,5 @@
         :else :eq))
 
 (t/run-tests)
+
+
