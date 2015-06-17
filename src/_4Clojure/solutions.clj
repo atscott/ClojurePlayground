@@ -198,6 +198,19 @@
        (interpose ",")
        (apply str)))
 
+
+(defn number77
+  "Write a function which finds all the anagrams in a vector of words. A word x is an anagram of word y if all the letters in x can be rearranged in a different order to form y. Your function should return a set of sets, where each sub-set is a group of words which are anagrams of each other. Each sub-set should have at least two words. Words without any anagrams should not be included in the result."
+  {:test (fn []
+           (is (= #{#{"meat" "team" "mate"}} (number77 ["meat" "mat" "team" "mate" "eat"])))
+           (is (= #{#{"veer" "ever"} #{"lake" "kale"} #{"mite" "item"}} (number77 ["veer" "lake" "item" "kale" "mite" "ever"]))))}
+  [ws]
+  (->> ws
+       (group-by sort)
+       (map #(set (val %)))
+       (filter #(> (count %) 1))
+       set))
+
 (defn number80
   "A number is 'perfect' if the sum of its divisors equal the nubmer itself. 6 is a perfect number because 1+2+3=6. Write a function which returns true for perfect numbers and false otherwise."
   {:test (fn []
@@ -346,5 +359,4 @@
         :else :eq))
 
 (t/run-tests)
-
 
