@@ -131,6 +131,20 @@
   (fn [& args]
     (map #(apply % args) fs)))
 
+(defn number60
+  "Write a function which behaves like reduce, but returns each intermediate value of the reduction. Your function must accept either two or three arguments, and the return sequence must be lazy. (can't use reductions)"
+  {:test (fn []
+           (is (= [0 1 3 6 10] (take 5 (number60 + (range 10)))))
+           (is (= [[1] [1 2] [1 2 3] [1 2 3 4]] (number60 conj [1] [2 3 4])))
+           (is (= 120 (reduce * 2 [3 4 5]) (last (number60 * 2 [3 4 5]))))
+           )}
+  ([f xs] (number60 f (first xs) (rest xs)))
+  ([f p xs]
+   (if (empty? xs)
+     [p]
+     (lazy-cat [p] (number60 f (f p (first xs)) (rest xs))))))
+
+
 (defn number61 [a b]
   "Write a function which takes a vector of keys and a vector of values and constructs a map from them."
   (apply hash-map (interleave a b)))
