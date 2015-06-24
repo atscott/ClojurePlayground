@@ -327,6 +327,17 @@
   ([a b & c]
    (reduce #(number100 % %2) a (cons b c))))
 
+(defn number102
+  "When working with java, you often need to create an object with fieldsLikeThis, but you'd rather work with a hashmap that has :keys-like-this until it's time to convert. Write a function which takes lower-case hyphen-separated strings and converts them to camel-case strings."
+  {:test (fn []
+           (is (= "something" (number102 "something")))
+           (is (= "multiWordKey" (number102 "multi-word-key")))
+           (is (= "leaveMeAlone" (number102 "leaveMeAlone"))))}
+  [s]
+  (let [ws (clojure.string/split s #"-")]
+    (str (first ws)
+         (apply str (map #(clojure.string/capitalize %) (rest ws))))))
+
 (defn number107 [n]
   "Given a positive integer n, return a function (f x) which computes x^n."
   #(reduce * (repeat n %)))
@@ -392,6 +403,3 @@
         :else :eq))
 
 (t/run-tests)
-
-
-(if-let [p ({:a 1} :b)] p "nope")
