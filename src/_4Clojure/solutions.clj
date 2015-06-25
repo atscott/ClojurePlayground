@@ -231,6 +231,23 @@
        (interpose ",")
        (apply str)))
 
+(defn number75
+  "Two numbers are coprime if their greatest common divisor equals 1. Euler's totient function f(x) is defined as the number of positive integers less than x which are coprime to x. The special case f(1) equals 1. Write a function which calculates Euler's totient function."
+  {:test (fn []
+           (is (= 1 (number75 1)))
+           (is (= (count [1 3 7 9]) 4 (number75 10)))
+           (is (= 16 (number75 40)))
+           (is (= 60 (number75 99))))}
+  [n]
+  (letfn [(gcd [x y]
+               (if (<= y 0)
+                 x
+                 (recur y (mod x y))))]
+    (if (= 1 n)
+      1
+      (->> (range 1 n)
+           (filter #(= 1 (gcd % n)))
+           (count)))))
 
 (defn number77
   "Write a function which finds all the anagrams in a vector of words. A word x is an anagram of word y if all the letters in x can be rearranged in a different order to form y. Your function should return a set of sets, where each sub-set is a group of words which are anagrams of each other. Each sub-set should have at least two words. Words without any anagrams should not be included in the result."
@@ -267,6 +284,24 @@
   "Write a function which takes a variable number of booleans. Your function should return true if some of the parameters are true, but not all of the parameters are true. Otherwise your function should return false."
   (-> (group-by identity x) count (= 2)))
 
+(defn number86
+  "Happy numbers are positive integers that follow a particular formula: take each individual digit, square it, and then sum the squares to get a new number. Repeat with the new number and eventually, you might get to a number whose squared sum is 1. This is a happy number. An unhappy number (or sad number) is one that loops endlessly. Write a function that determines if a number is happy or not."
+  {:test (fn []
+           (is (= true (number86 7)))
+           (is (= true (number86 986543210)))
+           (is (= false (number86 2)))
+           (is (= false (number86 3))))}
+  [n]
+  (letfn [(sum-square-parts [n] (->> (str n)
+                                     (map (comp #(* % %) read-string str))
+                                     (apply +)))]
+    (loop [n n hist #{}]
+      (let [s (sum-square-parts n)]
+        (cond
+          (hist n) false
+          (= 1 s) true
+          :else (recur s (conj hist n)))))))
+
 (defn number88 [xs ys]
   "Write a function which returns the symmetric difference of two sets. The symmetric difference is the set of items belonging to one but not both of the two sets."
   (clojure.set/union (clojure.set/difference xs ys) (clojure.set/difference ys xs)))
@@ -277,6 +312,15 @@
     (for [x xs
           y ys]
       [x y])))
+
+(defn number93
+  "Write a function which flattens any nested combination of sequential things (lists, vectors, etc.), but maintains the lowest level sequential items. The result should be a sequence of sequences with only one level of nesting."
+  {:test (fn []
+           (is (= [["Do"] ["Nothing"]] (number93 [["Do"] ["Nothing"]])))
+           (is (= [[:a :b] [:c :d] [:e :f]] (number93 [[[[:a :b]]] [[:c :d]] [:e :f]])))
+           (is (= '((1 2) (3 4) (5 6)) (number93 '((1 2) ((3 4) ((((5 6))))))))))}
+  [xs]
+  (mapcat #(if (sequential? (first %)) (number93 %) [%]) xs))
 
 (defn number95 [t]
   "Write a predicate which checks whether or not a given sequence represents a binary tree. Each node in the tree must have a value, a left child, and a right child."
