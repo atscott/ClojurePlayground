@@ -8,7 +8,7 @@
         increasing-neighbors (filter #(> (get-in grid %) (get-in grid [x y])) ns)]
     (if (empty? increasing-neighbors)
       1
-      (apply max (map #(inc (memo-increasing (first %) (last %) grid)) increasing-neighbors)))))
+      (apply max (map (fn [[nx ny]] (inc (memo-increasing nx ny grid))) increasing-neighbors)))))
 (def memo-increasing (memoize increasing))
 
 (defn find-increasing [grid]
