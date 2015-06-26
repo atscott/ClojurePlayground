@@ -284,6 +284,16 @@
   "Write a function which takes a variable number of booleans. Your function should return true if some of the parameters are true, but not all of the parameters are true. Otherwise your function should return false."
   (-> (group-by identity x) count (= 2)))
 
+(defn number85
+  "Write a function which generates the power set of a given set. The power set of a set x is the set of all subsets of x, including the empty set and x itself."
+  {:test (fn []
+           (is (= #{#{1 :a} #{:a} #{} #{1}} (number85 #{1 :a})))
+           (is (= #{#{} #{1} #{2} #{3} #{1 2} #{1 3} #{2 3} #{1 2 3}} (number85 #{1 2 3}))))}
+  [s]
+  (reduce (fn [m i]
+            (into m (map #(conj % i) m)))
+          #{#{}} s))
+
 (defn number86
   "Happy numbers are positive integers that follow a particular formula: take each individual digit, square it, and then sum the squares to get a new number. Repeat with the new number and eventually, you might get to a number whose squared sum is 1. This is a happy number. An unhappy number (or sad number) is one that loops endlessly. Write a function that determines if a number is happy or not."
   {:test (fn []
@@ -386,6 +396,26 @@
   "Given a positive integer n, return a function (f x) which computes x^n."
   #(reduce * (repeat n %)))
 
+(defn number115
+  "A balanced number is one whose component digits have the same sum on the left and right halves of the number. Write a function which accepts an integer n, and returns true iff n is balanced."
+  {:test (fn []
+           (is (true? (number115 11)))
+           (is (true? (number115 121)))
+           (is (false? (number115 123)))
+           (is (true? (number115 0)))
+           (is (false? (number115 88099)))
+           (is (true? (number115 89098)))
+           (is (true? (number115 89089)))
+           (is (= [0 1 2 3 4 5 6 7 8 9 11 22 33 44 55 66 77 88 99 101] (take 20 (filter #(number115 %) (range)))))
+           )}
+  [n]
+  (let [ns (map int (str n))
+        c (count (str n))]
+    (= (apply + (take (/ c 2) ns))
+       (apply + (drop (/ (dec c) 2) ns)))))
+
+(number115 11)
+
 (defn number118 [f xs]
   "Map is one of the core elements of a functional programming language. Given a function f and an input sequence s, return a lazy sequence of (f x) for each element x in s."
   (if (empty? xs)
@@ -412,6 +442,22 @@
   "Write a function that accepts a variable length mathematical expression consisting of numbers and the operations +, -, *, and /. Assume a simple calculator that does not do precedence and instead just calculates left to right."
   (reduce (fn [m [f v]] (f m v))
           i (partition 2 r)))
+
+(defn number137
+  "Write a function which returns a sequence of digits of a non-negative number (first argument) in numerical system with an arbitrary base (second argument). Digits should be represented with their integer values, e.g. 15 would be [1 5] in base 10, [1 1 1 1] in base 2 and [15] in base 16. "
+  {:test (fn []
+           (is (= [1 2 3 4 5 0 1] (number137 1234501 10)))
+           (is (= [0] (number137 0 11)))
+           (is (= [1 0 0 1] (number137 9 2)))
+           (is (= [1 0] (let [n (rand-int 100000)] (number137 n n))))
+           (is (= [16 18 5 24 15 1] (number137 Integer/MAX_VALUE 42))))}
+  [n base]
+  (loop [r [] c n]
+    (if (< c base)
+      (cons c r)
+      (recur (cons (rem c base) r) (quot c base)))))
+
+(cons 1 [2])
 
 (defn number143 [a b]
   "Create a function that computes the dot product of two sequences. You may assume that the vectors will have the same length."
@@ -447,3 +493,5 @@
         :else :eq))
 
 (t/run-tests)
+
+
