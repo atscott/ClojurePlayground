@@ -396,6 +396,17 @@
   "Given a positive integer n, return a function (f x) which computes x^n."
   #(reduce * (repeat n %)))
 
+(defn number110 [xs]
+  "Write a function that returns a lazy sequence of 'pronunciations' of a sequence of numbers. A pronunciation of each element in the sequence consists of the number of repeating identical numbers and the number itself. For example, [1 1] is pronounced as [2 1] ('two ones'), which in turn is pronounced as [1 2 1 1] ('one two, one one')."
+  {:test (fn []
+           (is (= [[1 1] [2 1] [1 2 1 1]] (number110 1)))
+           (is (= [3 1 2 4] (number110 [1 1 1 4 4])))
+           (is (= [1 1 1 3 2 1 3 2 1 1] (nth (number110 [1]) 6)))
+           (is (= 338 (count (nth (number110 [3 2]) 15)))))}
+  (let [parts (partition-by identity xs)
+        pronunciation (mapcat #(vector (count %) (first %)) parts)]
+    (lazy-cat [pronunciation] (number110 pronunciation))))
+
 (defn number115
   "A balanced number is one whose component digits have the same sum on the left and right halves of the number. Write a function which accepts an integer n, and returns true iff n is balanced."
   {:test (fn []
@@ -413,8 +424,6 @@
         c (count (str n))]
     (= (apply + (take (/ c 2) ns))
        (apply + (drop (/ (dec c) 2) ns)))))
-
-(number115 11)
 
 (defn number118 [f xs]
   "Map is one of the core elements of a functional programming language. Given a function f and an input sequence s, return a lazy sequence of (f x) for each element x in s."
