@@ -392,6 +392,22 @@
     (str (first ws)
          (apply str (map #(clojure.string/capitalize %) (rest ws))))))
 
+(defn number104
+  "This is the inverse of Problem 92, but much easier. Given an integer smaller than 4000, return the corresponding roman numeral in uppercase, adhering to the subtractive principle."
+  {:test (fn []
+           (is (= "I" (number104 1)))
+           (is (= "XXX" (number104 30)))
+           (is (= "IV" (number104 4)))
+           (is (= "CXL" (number104 140)))
+           (is (= "DCCCXXVII" (number104 827)))
+           (is (= "MMMCMXCIX" (number104 3999)))
+           (is (= "XLVIII" (number104 48))))}
+  [n]
+  (reduce
+    (fn [m [k v]] (clojure.string/replace m (apply str (repeat k "I")) v))
+    (apply str (repeat n "I"))
+    (array-map 1000 "M" 900 "CM" 500 "D" 400 "CD" 100 "C" 90 "XC" 50 "L" 40 "XL" 10 "X" 9 "IX" 5 "V" 4 "IV" 1 "I")))
+
 (defn number107 [n]
   "Given a positive integer n, return a function (f x) which computes x^n."
   #(reduce * (repeat n %)))
@@ -503,5 +519,4 @@
         :else :eq))
 
 (t/run-tests)
-
 
