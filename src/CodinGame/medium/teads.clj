@@ -5,7 +5,7 @@
   (-> (assoc m p1 (conj (m p1) p2))
       (assoc p2 (conj (m p2) p1))))
 
-(def depth-memo #(0))
+(declare depth-memo)
 (defn depth [start parent adjacency-list]
   (let [neighbors (filter #(not (= parent %)) (adjacency-list start))]
     (if (empty? neighbors)

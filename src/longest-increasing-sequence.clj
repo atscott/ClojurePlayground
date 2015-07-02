@@ -2,7 +2,7 @@
   (let [ns [[x (dec y)] [x (inc y)] [(dec x) y] [(inc x) y]]]
     (filter #(get-in grid %) ns)))
 
-(def memo-increasing #(0))
+(declare memo-increasing)
 (defn increasing [x y grid]
   (let [ns (get-neighbors x y grid)
         increasing-neighbors (filter #(> (get-in grid %) (get-in grid [x y])) ns)]
