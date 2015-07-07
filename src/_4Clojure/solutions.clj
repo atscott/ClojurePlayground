@@ -442,6 +442,25 @@
     (= (apply + (take (/ c 2) ns))
        (apply + (drop (/ (dec c) 2) ns)))))
 
+(defn number116
+  {:test (fn []
+           (is (false? (number116 4)))
+           (is (true? (number116 563)))
+           (is (= 1103 (nth (filter number116 (range)) 15))))}
+  [n]
+  (letfn [(prime? [x]
+                  (if (= 1 x)
+                    false
+                    (->> (range 2 (int (inc (Math/sqrt x))))
+                         (some #(= 0 (mod x %)))
+                         (not))))
+          (mean [a b] (/ (+ a b) 2))]
+    (if (or (not (prime? n)) (< n 3))
+      false
+      (let [next-prime (->> (range (inc n) Integer/MAX_VALUE) (filter prime?) (first))
+            last-prime (->> (range (dec n) 1 -1) (filter prime?) (first))]
+          (= (mean last-prime next-prime) n)))))
+
 (defn number118 [f xs]
   "Map is one of the core elements of a functional programming language. Given a function f and an input sequence s, return a lazy sequence of (f x) for each element x in s."
   (if (empty? xs)
