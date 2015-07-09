@@ -412,6 +412,25 @@
   "Given a positive integer n, return a function (f x) which computes x^n."
   #(reduce * (repeat n %)))
 
+(defn number108
+  "Given any number of sequences, each sorted from smallest to largest, find the smallest single number which appears in all of the sequences. The sequences may be infinite, so be careful to search lazily."
+  {:test (fn []
+           (is (= 3 (number108 [3 4 5])))
+           (is (= 4 (number108 [1 2 3 4 5 6 7] [0.5 3/2 4 19])))
+           (is (= 7 (number108 (range) (range 0 100 7/6) [2 3 5 7 11 13])))
+           (is (= 64 (number108 (map #(* % % %) (range))    ;; perfect cubes
+                                (filter #(zero? (bit-and % (dec %))) (range)) ;; powers of 2
+                                (iterate inc 20)))))}
+  [xs & ys]
+  (let [candidate (first xs)
+        in-all (->> ys
+                    (mapcat #(take-while (fn [x] (<= x candidate)) %))
+                    (filter #(= % candidate))
+                    (#(= (count %) (count ys))))]
+    (if (true? in-all)
+      candidate
+      (recur (rest xs) (map #(drop-while (fn [x] (<= x candidate)) %) ys)))))
+
 (defn number110
   "Write a function that returns a lazy sequence of 'pronunciations' of a sequence of numbers. A pronunciation of each element in the sequence consists of the number of repeating identical numbers and the number itself. For example, [1 1] is pronounced as [2 1] ('two ones'), which in turn is pronounced as [1 2 1 1] ('one two, one one')."
   {:test (fn []
@@ -459,7 +478,7 @@
       false
       (let [next-prime (->> (range (inc n) Integer/MAX_VALUE) (filter prime?) (first))
             last-prime (->> (range (dec n) 1 -1) (filter prime?) (first))]
-          (= (mean last-prime next-prime) n)))))
+        (= (mean last-prime next-prime) n)))))
 
 (defn number118 [f xs]
   "Map is one of the core elements of a functional programming language. Given a function f and an input sequence s, return a lazy sequence of (f x) for each element x in s."
@@ -483,6 +502,19 @@
                (int))]
     (if (= \1 (last binary)) t (dec t))))
 
+(defn number132
+  "Write a function that takes a two-argument predicate, a value, and a collection; and returns a new collection where the value is inserted between every two items that satisfy the predicate."
+  {:test (fn []
+           (is (= '(1 :less 6 :less 7 4 3) (number132 < :less [1 6 7 4 3]))))}
+  ([f x xs] (number132 f x xs nil))
+  ([f x xs last]
+   (if-not (empty? xs)
+     (lazy-cat
+       (if (and (not (nil? last)) (f last (first xs)))
+         [x (first xs)]
+         [(first xs)])
+       (number132 f x (rest xs) (first xs))))))
+
 (defn number135 [i & r]
   "Write a function that accepts a variable length mathematical expression consisting of numbers and the operations +, -, *, and /. Assume a simple calculator that does not do precedence and instead just calculates left to right."
   (reduce (fn [m [f v]] (f m v))
@@ -501,8 +533,6 @@
     (if (< c base)
       (cons c r)
       (recur (cons (rem c base) r) (quot c base)))))
-
-(cons 1 [2])
 
 (defn number143 [a b]
   "Create a function that computes the dot product of two sequences. You may assume that the vectors will have the same length."
