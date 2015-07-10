@@ -443,6 +443,21 @@
         pronunciation (mapcat #(vector (count %) (first %)) parts)]
     (lazy-cat [pronunciation] (number110 pronunciation))))
 
+(defn number114
+  "Write a function which accepts an integer n, a predicate p, and a sequence. It should return a lazy sequence of items in the list up to, but not including, the nth item that satisfies the predicate."
+  {:test (fn []
+           (is (= [2 3 5 7 11 13] (number114 4 #(= 2 (mod % 3))
+                                             [2 3 5 7 11 13 17 19 23])))
+           (is (= ["this" "is" "a" "sentence"] (number114 3 #(some #{\i} %)
+                                                          ["this" "is" "a" "sentence" "i" "wrote"])))
+           (is (= ["this" "is"] (number114 1 #{"a"}
+                                           ["this" "is" "a" "sentence" "i" "wrote"]))))}
+  [n p xs]
+  (when-let [[x & xs] xs]
+    (let [n (if (p x) (dec n) n)]
+      (if (> n 0)
+        (lazy-seq (cons x (number114 n p xs)))))))
+
 (defn number115
   "A balanced number is one whose component digits have the same sum on the left and right halves of the number. Write a function which accepts an integer n, and returns true iff n is balanced."
   {:test (fn []
@@ -565,8 +580,7 @@
            (is (= "1277732511922987429116" (str (number148 (* 10000 10000 10000) 757 809))))
            (is (= "4530161696788274281" (str (number148 (* 10000 10000 1000) 1597 3571)))))}
   [n a b]
-  (letfn [(partial-sum [n a1 an]
-                       (-> (+' a1 an) (*' n) (/ 2)))
+  (letfn [(partial-sum [n a1 an] (-> (+' a1 an) (*' n) (/ 2)))
           (find-sum [x]
                     (let [q (quot (dec n) x)]
                       (partial-sum q x (* x q))))]
