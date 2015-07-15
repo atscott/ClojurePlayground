@@ -351,17 +351,22 @@
                            t))]
     (= left (mirror-leaves right))))
 
-(defn number97 [n]
+(defn number97
   "Write a function which returns the nth row of Pascal's Triangle."
-  (loop [rowNum 2 previous [1]]
-    (if (> rowNum n)
-      previous
-      (recur
-        (inc rowNum)
-        (reduce
-          #(conj % (+ (nth previous (dec %2) 0) (nth previous %2 0)))
-          []
-          (range rowNum))))))
+  {:test (fn []
+           (is (= [1] (number97 1)))
+           (is (= [[1]
+                   [1 1]
+                   [1 2 1]
+                   [1 3 3 1]
+                   [1 4 6 4 1]] (map number97 (range 1 6))))
+           (is (= [1 10 45 120 210 252 210 120 45 10 1] (number97 11))))}
+  [n]
+  (let [pascal (iterate #(concat [1]
+                                 (map + % (rest %))
+                                 [1])
+                        '(1))]
+    (nth pascal (dec n))))
 
 (defn number99 [x y]
   "Write a function which multiplies two numbers and returns the result as a sequence of its digits."
