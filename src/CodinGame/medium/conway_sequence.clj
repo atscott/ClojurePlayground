@@ -24,20 +24,20 @@
 (defn conway-2
   "returns lazy sequence"
   {:test (fn []
-           (is (= [1 1 1 3 1 2 2 1 1 3 3 1 1 2 1 3 2 1 1 3 2 1 2 2 2 1] (nth (conway-2 1) 11)))
+           (is (= [1 1 1 3 1 2 2 1 1 3 3 1 1 2 1 3 2 1 1 3 2 1 2 2 2 1] (nth (conway-2 1) 10)))
            (is (= [2] (first (conway-2 2))))
-           (is (= [3 1 1 3 1 1 2 2 2 1 1 3 1 1 1 2 3 1 1 3 3 2 2 1 1 5] (nth (conway-2 5) 10)))
-           (is (= [3 1 1 3 1 1 2 2 2 1 1 3 1 1 1 2 3 1 1 3 3 2 2 1 1 25] (nth (conway-2 25) 10))))}
+           (is (= [3 1 1 3 1 1 2 2 2 1 1 3 1 1 1 2 3 1 1 3 3 2 2 1 1 5] (nth (conway-2 5) 9)))
+           (is (= [3 1 1 3 1 1 2 2 2 1 1 3 1 1 1 2 3 1 1 3 3 2 2 1 1 25] (nth (conway-2 25) 9))))}
   [seed]
  (iterate #(->> (partition-by identity %)
-                              (mapcat (juxt count first))
-                        [seed])))
+                              (mapcat (juxt count first)))
+                        [seed]))
 
 (defn -main [& args]
   (let [start (read) line (read)]
     (->> (conway-2 start)
-         (#(nth % (dec line))
+         (#(nth % (dec line)))
          (interpose " ")
          (println))))
 
-;(t/run-tests)
+(t/run-tests)
