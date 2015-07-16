@@ -559,6 +559,18 @@
   (->> (map * a b)
        (reduce +)))
 
+(defn number144
+  "Write an oscillating iterate: a function that takes an initial value and a variable number of functions. It should return a lazy sequence of the functions applied to the value in order, restarting from the first function after it hits the end."
+  {:test (fn []
+           (is (= [3.14 3 3.0] (take 3 (number144 3.14 int double))))
+           (is (= [3 0 5 2 7] (take 5 (number144 3 #(- % 3) #(+ 5 %)))))
+           (is (= [0 1 0 1 0 1 2 1 2 1 2 3] (take 12 (number144 0 inc dec inc dec inc)))))}
+  [n & fs]
+  (cons n (lazy-seq
+            (apply number144 ((first fs) n) (concat
+                                              (rest fs)
+                                              [(first fs)])))))
+
 (defn number146 [m]
   "For this problem, your goal is to 'flatten' a map of hashmaps. Each key in your output map should be the 'path' that you would have to take in the original map to get to a value, so for example {1 {2 3}} should result in {[1 2] 3}. You only need to flatten one level of maps: if one of the values is a map, just leave it alone."
   (into {} (for [k (keys m)
