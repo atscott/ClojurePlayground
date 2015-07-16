@@ -29,14 +29,14 @@
            (is (= [3 1 1 3 1 1 2 2 2 1 1 3 1 1 1 2 3 1 1 3 3 2 2 1 1 5] (nth (conway-2 5) 10)))
            (is (= [3 1 1 3 1 1 2 2 2 1 1 3 1 1 1 2 3 1 1 3 3 2 2 1 1 25] (nth (conway-2 25) 10))))}
   [seed]
-  (cons [seed] (iterate #(->> (partition-by identity %)
-                              (mapcat (juxt count first)))
+ (iterate #(->> (partition-by identity %)
+                              (mapcat (juxt count first))
                         [seed])))
 
 (defn -main [& args]
   (let [start (read) line (read)]
     (->> (conway-2 start)
-         (#(nth % line))
+         (#(nth % (dec line))
          (interpose " ")
          (println))))
 
