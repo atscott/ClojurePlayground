@@ -413,6 +413,20 @@
     (apply str (repeat n "I"))
     (array-map 1000 "M" 900 "CM" 500 "D" 400 "CD" 100 "C" 90 "XC" 50 "L" 40 "XL" 10 "X" 9 "IX" 5 "V" 4 "IV" 1 "I")))
 
+(defn number105
+  "Given an input sequence of keywords and numbers, create a map such that each key in the map is a keyword, and the value is a sequence of all the numbers (if any) between it and the next keyword in the sequence."
+  {:test (fn []
+           (is (= {} (number105 [])))
+           (is (= {:a [1]} (number105 [:a 1])))
+           (is (= {:a [1], :b [2]} (number105 [:a 1 :b 2])))
+           (is (= {:a [1 2 3], :b [], :c [4]} (number105 [:a 1 2 3 :b :c 4]))))}
+  [xs]
+  (let [kvs (reduce #(if (keyword? %2)
+                      (assoc %1 :ks (conj (:ks %1) %2) :vs (conj (:vs %1) []))
+                      (assoc-in %1 [:vs (dec (count (:vs %1)))] (conj (last (:vs %1)) %2)))
+                    {:ks [] :vs []} xs)]
+    (zipmap (:ks kvs) (:vs kvs))))
+
 (defn number107 [n]
   "Given a positive integer n, return a function (f x) which computes x^n."
   #(reduce * (repeat n %)))
