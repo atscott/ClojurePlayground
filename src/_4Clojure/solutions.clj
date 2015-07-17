@@ -536,6 +536,38 @@
                (int))]
     (if (= \1 (last binary)) t (dec t))))
 
+
+(defn number131
+ "Given a variable number of sets of integers, create a function which returns true iff all of the sets have a non-empty subset with an equivalent summation."
+  {:test (fn []
+           (is (true? (number131  #{-1 1 99}
+                                  #{-2 2 888}
+                                  #{-3 3 7777})))
+           (is (false? (number131 #{1}
+                                 #{2}
+                                 #{3}
+                                 #{4})))
+           (is (true? (number131 #{1})))
+           (is (false? (number131 #{1 -3 51 9}
+                                  #{0}
+                                  #{9 2 81 33})))
+           (is (true? (number131 #{1 3 5}
+                                 #{9 11 4}
+                                 #{-3 12 3}
+                                 #{-3 4 -2 10}))))}
+  [& xs]
+  (let [permutate (fn [s]
+                    (reduce (fn [m x]
+                              (reduce #(conj % (conj %2 x)) m m))
+                            #{#{}} s))
+        sums (map (fn [x]
+                    (->> (permutate x)
+                         (remove #{#{}})
+                         (map #(reduce + %))
+                         (into #{})))
+                  xs)]
+    (not (empty? (apply clojure.set/intersection sums)))))
+
 (defn number132
   "Write a function that takes a two-argument predicate, a value, and a collection; and returns a new collection where the value is inserted between every two items that satisfy the predicate."
   {:test (fn []
