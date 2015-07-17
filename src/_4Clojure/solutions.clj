@@ -562,7 +562,7 @@
                             #{#{}} s))
         sums (map (fn [x]
                     (->> (permutate x)
-                         (remove #{#{}})
+                         (remove empty?)
                          (map #(reduce + %))
                          (into #{})))
                   xs)]
