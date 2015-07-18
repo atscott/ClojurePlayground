@@ -397,6 +397,28 @@
     (str (first ws)
          (apply str (map #(clojure.string/capitalize %) (rest ws))))))
 
+
+(defn number103
+  "Given a sequence S consisting of n elements generate all k-combinations of S, i. e. generate all possible sets consisting of k distinct elements taken from S. The number of k-combinations for a sequence is equal to the binomial coefficient."
+  {:test (fn []
+           (is (= #{#{4} #{5} #{6}} (number103 1 #{4 5 6})))
+           (is (= #{} (number103 10 #{4 5 6})))
+           (is (= (number103 2 #{0 1 2}) #{#{0 1} #{0 2} #{1 2}}))
+           (is (= (number103 3 #{0 1 2 3 4}) #{#{0 1 2} #{0 1 3} #{0 1 4} #{0 2 3} #{0 2 4}
+                                               #{0 3 4} #{1 2 3} #{1 2 4} #{1 3 4} #{2 3 4}}))
+           (is (= (number103 4 #{[1 2 3] :a "abc" "efg"}) #{#{[1 2 3] :a "abc" "efg"}}))
+           (is (= (number103 2 #{[1 2 3] :a "abc" "efg"}) #{#{[1 2 3] :a} #{[1 2 3] "abc"} #{[1 2 3] "efg"}
+                                                            #{:a "abc"} #{:a "efg"} #{"abc" "efg"}})))}
+  [n s]
+  (->> s
+       (reduce (fn [m x]
+                 (reduce #(conj % (conj %2 x)) m m))
+               #{#{}})
+       (filter #(= (count %) n))
+       (into #{})))
+
+
+
 (defn number104
   "This is the inverse of Problem 92, but much easier. Given an integer smaller than 4000, return the corresponding roman numeral in uppercase, adhering to the subtractive principle."
   {:test (fn []
@@ -538,15 +560,15 @@
 
 
 (defn number131
- "Given a variable number of sets of integers, create a function which returns true iff all of the sets have a non-empty subset with an equivalent summation."
+  "Given a variable number of sets of integers, create a function which returns true iff all of the sets have a non-empty subset with an equivalent summation."
   {:test (fn []
-           (is (true? (number131  #{-1 1 99}
-                                  #{-2 2 888}
-                                  #{-3 3 7777})))
+           (is (true? (number131 #{-1 1 99}
+                                 #{-2 2 888}
+                                 #{-3 3 7777})))
            (is (false? (number131 #{1}
-                                 #{2}
-                                 #{3}
-                                 #{4})))
+                                  #{2}
+                                  #{3}
+                                  #{4})))
            (is (true? (number131 #{1})))
            (is (false? (number131 #{1 -3 51 9}
                                   #{0}
