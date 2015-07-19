@@ -563,6 +563,31 @@
                                          0 (str n)))]
     (count (filter #(< % (sum-square-components %)) xs))))
 
+(defn number121
+  {:test (fn []
+           (is (= 2 ((number121 '(/ a b))
+                      '{b 8 a 16})))
+           (is (= 8 ((number121 '(+ a b 2))
+                      '{a 2 b 4})))
+           (is (= [6 0 -4]
+                  (map (number121 '(* (+ 2 a)
+                                      (- 10 b)))
+                       '[{a 1 b 8}
+                         {b 5 a -2}
+                         {a 2 b 11}])))
+           (is (= 1 ((number121 '(/ (+ x 2)
+                                    (* 3 (+ y 1))))
+                      '{x 4 y 1})))
+           )}
+  [l]
+  (fn [m]
+    (letfn [(deep-replace [x]
+                          (map #(if (coll? %)
+                                 (deep-replace %)
+                                 (first (replace m [%])))
+                               x))]
+      (eval (deep-replace l)))))
+
 (defn number122 [binary]
   "Convert a binary number, provided in the form of a string, to its numerical value."
   (let [t (->> (reverse binary)
@@ -692,6 +717,10 @@
 (defn number156 [default xs]
   "Write a function which takes a default value and a sequence of keys and constructs a map."
   (zipmap xs (repeat default)))
+
+(defn number158 [f]
+  "Write a function that accepts a curried function of unknown arity n. Return an equivalent function of n arguments. "
+  (fn [& x] (reduce #(% %2) f x)))
 
 (defn number166 [f a b]
   (cond (f a b) :lt
