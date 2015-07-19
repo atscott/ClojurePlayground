@@ -368,6 +368,21 @@
                         '(1))]
     (nth pascal (dec n))))
 
+(defn number98
+  "A function f defined on a domain D induces an equivalence relation on D, as follows: a is equivalent to b with respect to f if and only if (f a) is equal to (f b). Write a function with arguments f and D that computes the equivalence classes of D with respect to f."
+  {:test (fn []
+           (is (= (number98 #(* % %) #{-2 -1 0 1 2})) #{#{0} #{1 -1} #{2 -2}})
+           (is (= (number98 #(rem % 3) #{0 1 2 3 4 5})
+                  #{#{0 3} #{1 4} #{2 5}}))
+           (is (= (number98 identity #{0 1 2 3 4})
+                  #{#{0} #{1} #{2} #{3} #{4}}))
+           (is (= (number98 (constantly true) #{0 1 2 3 4})
+                  #{#{0 1 2 3 4}})))}
+  [f D]
+  (->> (reduce #(merge-with clojure.set/union % {(f %2) #{%2}}) {} D)
+       (vals)
+       (into #{})))
+
 (defn number99 [x y]
   "Write a function which multiplies two numbers and returns the result as a sequence of its digits."
   (->> (* x y)
@@ -416,8 +431,6 @@
                #{#{}})
        (filter #(= (count %) n))
        (into #{})))
-
-
 
 (defn number104
   "This is the inverse of Problem 92, but much easier. Given an integer smaller than 4000, return the corresponding roman numeral in uppercase, adhering to the subtractive principle."
