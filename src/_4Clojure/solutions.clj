@@ -564,6 +564,7 @@
     (count (filter #(< % (sum-square-components %)) xs))))
 
 (defn number121
+  "Given a mathematical formula in prefix notation, return a function that calculates the value of the formula. The formula can contain nested calculations using the four basic mathematical operators, numeric constants, and symbols representing variables. The returned function has to accept a single parameter containing the map of variable names to their values. "
   {:test (fn []
            (is (= 2 ((number121 '(/ a b))
                       '{b 8 a 16})))
@@ -577,16 +578,16 @@
                          {a 2 b 11}])))
            (is (= 1 ((number121 '(/ (+ x 2)
                                     (* 3 (+ y 1))))
-                      '{x 4 y 1})))
-           )}
+                      '{x 4 y 1}))))}
   [l]
-  (fn [m]
-    (letfn [(deep-replace [x]
-                          (map #(if (coll? %)
-                                 (deep-replace %)
-                                 (first (replace m [%])))
-                               x))]
-      (eval (deep-replace l)))))
+  (fn [smap]
+    (let [full-smap (merge smap {'+ +, '/ /, '* *, '- -})]
+      (letfn [(my-eval [[f & xs]]
+                       (apply (full-smap f) (map #(if (coll? %)
+                                                   (my-eval %)
+                                                   (get full-smap % %))
+                                                 xs)))]
+        (my-eval l)))))
 
 (defn number122 [binary]
   "Convert a binary number, provided in the form of a string, to its numerical value."
