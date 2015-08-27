@@ -15,8 +15,7 @@
                        (remove #{[1 1]})
                        (sort))
                   (sort (get-neighbors [1 1] [[0 0 0]
-                                              [0 0 0]]))))
-           )}
+                                              [0 0 0]])))))}
   [[x y] grid]
   (->> (for [dx (range -1 2) dy (range -1 2)
              :when (not (and (= 0 dx) (= 0 dy)))]
@@ -42,9 +41,7 @@
       (< alive-neighbors 2) " "
       (= alive-neighbors 3) "#"
       (> alive-neighbors 3) " "
-      :else (get-in board [x y])
-      ))
-  )
+      :else (get-in board [x y]))))
 
 (defn get-next-board
   {:test (fn []
@@ -65,7 +62,7 @@
           (println (str "rounds left: " (:rounds game-info)))
           (print-board (:board game-info))
           (recur {:board  (get-next-board (:board game-info))
-                 :rounds (dec (:rounds game-info))}))
+                  :rounds (dec (:rounds game-info))}))
         :else "Done"))
 
 
